@@ -15,5 +15,15 @@ public DVD(String category){}
 public DVD(String title,int id){}
 public DVD(int id,String category){}
 -> java cho phép.
-
+1. Is JAVA a Pass by Value or a Pass by Reference programming language?
+JAVA luôn luôn là ngôn ngữ Pass-by-Value (Truyền tham trị).Dù đối tượng được truyền vào hàm, thứ thực sự được truyền đi là giá trị của biến tham chiếu (địa chỉ ô nhớ), chứ không phải bản thân đối tượng hay địa chỉ của biến đó. Java tạo ra một bản sao của tham chiếu này và gán cho tham số của phương thức.
+2. After the call of swap(jungleDVD, cinderellaDVD), why does the title of these two objects still remain?
+Bởi vì Java truyền tham trị cho biến tham chiếu đối tượng.
+Khi hàm swap được gọi, Java tạo ra hai biến cục bộ mới là o1 và o2, sao chép địa chỉ của jungleDVD và cinderellaDVD vào chúng.
+Lệnh tráo đổi bên trong hàm chỉ làm thay đổi địa chỉ mà o1 và o2 đang trỏ tới (trong bộ nhớ Stack của hàm).
+Nó không làm thay đổi địa chỉ mà các biến gốc jungleDVD và cinderellaDVD ở hàm main đang giữ. Do đó, sau khi hàm kết thúc, hai đối tượng ở hàm main vẫn trỏ về vị trí cũ, tiêu đề không đổi.
+3. After the call of changeTitle(jungleDVD, cinderellaDVD.getTitle()), why is the title of the JungleDVD changed?
+Bởi vì hàm đã tác động trực tiếp vào nội dung của đối tượng trong bộ nhớ Heap.
+Mặc dù biến tham chiếu được truyền bằng giá trị (bản sao địa chỉ), nhưng bản sao này vẫn trỏ tới cùng một đối tượng thực tế trong bộ nhớ Heap.
+Lệnh dvd.setTitle(title) sử dụng địa chỉ đó để truy cập vào đối tượng và thay đổi giá trị thuộc tính title. Vì đối tượng bị thay đổi nội dung, nên khi quay lại hàm main, chúng ta thấy tiêu đề của jungleDVD đã chuyển thành tiêu đề mới.
 
