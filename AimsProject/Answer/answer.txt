@@ -26,4 +26,5 @@ Nó không làm thay đổi địa chỉ mà các biến gốc jungleDVD và cin
 Bởi vì hàm đã tác động trực tiếp vào nội dung của đối tượng trong bộ nhớ Heap.
 Mặc dù biến tham chiếu được truyền bằng giá trị (bản sao địa chỉ), nhưng bản sao này vẫn trỏ tới cùng một đối tượng thực tế trong bộ nhớ Heap.
 Lệnh dvd.setTitle(title) sử dụng địa chỉ đó để truy cập vào đối tượng và thay đổi giá trị thuộc tính title. Vì đối tượng bị thay đổi nội dung, nên khi quay lại hàm main, chúng ta thấy tiêu đề của jungleDVD đã chuyển thành tiêu đề mới.
-
+"What should be the return type of this method?"
+Kiểu trả về phải là String.
