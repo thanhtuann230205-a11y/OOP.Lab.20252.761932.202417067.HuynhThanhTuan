@@ -1,5 +1,5 @@
-import javax.swing.JOptionPane;
 package hust.soict.dsai.lab01;
+import javax.swing.JOptionPane;
 public class bai25 {
     public static void main(String[] args){
         String m=JOptionPane.showInputDialog(null,"Nhập số a: ");
