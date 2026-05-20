@@ -28,3 +28,24 @@ Mặc dù biến tham chiếu được truyền bằng giá trị (bản sao đ�
 Lệnh dvd.setTitle(title) sử dụng địa chỉ đó để truy cập vào đối tượng và thay đổi giá trị thuộc tính title. Vì đối tượng bị thay đổi nội dung, nên khi quay lại hàm main, chúng ta thấy tiêu đề của jungleDVD đã chuyển thành tiêu đề mới.
 "What should be the return type of this method?"
 Kiểu trả về phải là String.
+bài 12 lab 04:
+Câu 1: Sự khác biệt giữa giao diện Comparable và Comparator?
+Comparable:
+Được coi là thứ tự tự nhiên (natural ordering) của đối tượng.
+Được triển khai ngay bên trong lớp của đối tượng đó (bằng cách ghi đè phương thức compareTo()).
+Mỗi lớp chỉ có thể có duy nhất một quy tắc Comparable.
+Comparator:
+Được coi là các thứ tự tùy chỉnh khác nhau.
+Được triển khai trong các lớp riêng biệt (như MediaComparatorByTitleCost mà bạn đã làm).
+Một lớp có thể có nhiều bộ Comparator khác nhau (sắp xếp theo tên, theo giá, theo ngày...).
+Câu 2: Tại sao chúng ta sử dụng Comparator thay vì Comparable cho lớp Media trong bài tập này?
+Yêu cầu đa dạng: Đề bài yêu cầu người dùng có quyền lựa chọn giữa 2 cách sắp xếp khác nhau (theo Tiêu đề hoặc theo Giá). Nếu dùng Comparable, ta chỉ có thể chọn 1 trong 2 làm mặc định.
+Tính linh hoạt: Comparator cho phép ta định nghĩa nhiều chiến lược sắp xếp mà không cần sửa đổi mã nguồn gốc của lớp Media quá nhiều, giúp tuân thủ nguyên tắc Open/Closed trong lập trình hướng đối tượng (mở rộng tính năng nhưng hạn chế sửa đổi code cũ).
+Câu 3: Nếu muốn thay đổi quy tắc sắp xếp riêng cho DVD là "Tiêu đề -> Độ dài (giảm dần) -> Giá (giảm dần)", bạn sẽ làm thế nào?
+Để làm điều này, bạn cần tạo một Comparator mới và sử dụng kiểm tra kiểu dữ liệu (instanceof):
+Trong phương thức compare(Media m1, Media m2), đầu tiên ta kiểm tra nếu cả m1 và m2 đều là DigitalVideoDisc.
+Nếu đúng, ta tiến hành so sánh theo thứ tự:
+So sánh Title.
+Nếu Title giống nhau, ép kiểu (cast) sang DVD để lấy length và so sánh giảm dần.
+Nếu length vẫn giống nhau, so sánh Cost giảm dần.
+Nếu không phải cả hai đều là DVD, ta dùng quy tắc mặc định của Media.
