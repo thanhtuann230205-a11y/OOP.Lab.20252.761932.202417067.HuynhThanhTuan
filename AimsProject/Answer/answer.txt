@@ -49,3 +49,38 @@ So sánh Title.
 Nếu Title giống nhau, ép kiểu (cast) sang DVD để lấy length và so sánh giảm dần.
 Nếu length vẫn giống nhau, so sánh Cost giảm dần.
 Nếu không phải cả hai đều là DVD, ta dùng quy tắc mặc định của Media.
+Để tiện cho bạn ôn tập và đối chiếu trước khi nộp bài hoặc bảo vệ, dưới đây là tổng hợp toàn bộ **các câu hỏi lý thuyết cốt lõi** xuất hiện trong bài **Lab 04 (AIMS Project)** liên quan đến thiết kế hệ thống, kèm theo câu trả lời chi tiết, chuẩn xác nhất theo kiến trúc hướng đối tượng (OOP).
+## Câu hỏi 1: Phân biệt thuộc tính/phương thức của lớp (Class Members - static) và của thực thể (Instance Members)
+> **Câu hỏi trong Lab:** Khi nào một thuộc tính hoặc phương thức nên được khai báo là `static`? Lấy ví dụ thực tế trong hệ thống AIMS của bạn.
+### Trả lời:
+* **Thuộc tính/Phương thức thực thể (Instance Members):** Thuộc về riêng từng đối tượng cụ thể được tạo ra. Mỗi đối tượng sẽ có một vùng nhớ độc lập để lưu trữ giá trị này.
+* *Ví dụ trong AIMS:* Thuộc tính `title`, `cost` của lớp `Media`. Mỗi cuốn sách hay mỗi đĩa DVD khác nhau sẽ có tên và giá tiền hoàn toàn khác nhau.
+* **Thuộc tính/Phương thức của lớp (Class Members - `static`):** Thuộc về toàn bộ lớp chứ không riêng một đối tượng nào. Tất cả các thực thể được tạo ra từ lớp đó đều dùng chung một vùng nhớ duy nhất.
+* *Ví dụ trong AIMS:* Hằng số `MAX_NUMBERS_ORDERED = 20` trong lớp `Cart` (giới hạn giỏ hàng áp dụng chung cho mọi giỏ hàng) hoặc biến đếm `nbMedia` trong lớp `Media` (để tự động tăng ID tự thân mỗi khi một sản phẩm mới được khởi tạo).
+## Câu hỏi 2: Bản chất của mối quan hệ Aggregation (Kết tập) và tại sao áp dụng cho Cart/Store
+> **Câu hỏi trong Lab:** Tại sao mối quan hệ giữa `Cart` với `Media` (hoặc `Store` với `Media`) lại được thiết kế là quan hệ Kết tập (Aggregation) thay vì quan hệ Thành phần (Composition) hay Liên kết thông thường (Association)?
+### Trả lời:
+* **Định nghĩa:** Aggregation là mối quan hệ "chứa" (Has-A), thể hiện một đối tượng lớn được cấu thành từ các đối tượng nhỏ hơn. Trong đó, các đối tượng nhỏ có vòng đời độc lập, nghĩa là nếu đối tượng lớn bị hủy, đối tượng nhỏ vẫn tồn tại.
+* **Áp dụng vào bài Lab:** * `Cart` (Giỏ hàng) và `Store` (Cửa hàng) đều chứa một danh sách các sản phẩm `Media`.
+* Mối quan hệ này bắt buộc phải là **Aggregation** vì khi người dùng xóa Giỏ hàng (`Cart`), hoặc khi Cửa hàng (`Store`) đóng cửa, các mặt hàng (`Media` như sách, DVD, CD) vẫn tồn tại độc lập trong hệ thống dữ liệu chung chứ không bị xóa sạch theo.
+## Câu hỏi 3: Vai trò của Interface trong thiết kế hệ thống (Ứng dụng với `Playable`)
+> **Câu hỏi trong Lab:** Interface `Playable` giải quyết bài toán gì trong hệ thống? Tại sao chúng ta không gom hàm `play()` trực tiếp vào lớp cha `Media`?
+### Trả lời:
+* **Lý do không gom vào `Media`:** Lớp `Media` là lớp cha chung của tất cả sản phẩm, bao gồm cả `Book` (Sách). Về mặt logic thực tế, Sách thì không thể "phát/chạy" (`play()`) giống như đĩa nhạc hay đĩa phim được. Nếu đưa `play()` vào lớp cha `Media`, lớp con `Book` sẽ buộc phải thừa kế một hàm vô nghĩa.
+* **Giải pháp dùng Interface:** `Playable` được tạo ra để đóng gói riêng một **hành vi biệt lập** (phát nội dung). Chỉ những lớp con nào có khả năng phát được như `DigitalVideoDisc`, `CompactDisc`, và `Track` mới triển khai (`implements`) giao diện này.
+* **Ý nghĩa:** Giúp hệ thống đảm bảo tính chặt chẽ trong thiết kế (không thừa thãi code), đồng thời tận dụng tối đa sức mạnh của **Tính đa hình (Polymorphism)** khi xử lý danh sách sản phẩm.
+## Câu hỏi 4: Cơ chế nạp chồng phương thức (Overloading) trong lớp `Cart`
+> **Câu hỏi trong Lab:** Hệ thống xử lý việc tìm kiếm sản phẩm hoặc thêm sản phẩm trong giỏ hàng như thế nào khi tham số truyền vào khác nhau?
+### Trả lời:
+Bài Lab yêu cầu áp dụng kỹ thuật **Method Overloading** (Nạp chồng phương thức) bên trong lớp `Cart` để tăng tính linh hoạt cho lập trình viên khi gọi hàm:
+* **Tìm kiếm:** Hệ thống cung cấp hai hàm trùng tên nhưng khác tham số:
+* `+ search(id: int): void` $\rightarrow$ Tìm kiếm sản phẩm chính xác theo mã định danh ID.
+* `+ search(title: String): void` $\rightarrow$ Tìm kiếm sản phẩm theo từ khóa tiêu đề.
+* **Thêm sản phẩm:** Hàm `addMedia` được nạp chồng để người dùng có thể truyền vào một đối tượng `Media` lẻ, hoặc truyền vào một mảng `Media[]`, hoặc một danh sách `List<Media>` để thêm hàng loạt cùng một lúc.
+## Câu hỏi 5: Xử lý Đa hình và Ép kiểu an toàn khi chạy chương trình (Hàm `main` lớp `Aims`)
+> **Câu hỏi trong Lab:** Khi người dùng chọn tính năng "Play" một sản phẩm bất kỳ từ giỏ hàng (vốn được lưu trữ dưới dạng danh sách `ArrayList<Media>`), làm thế nào để gọi hàm `.play()` mà không gây crash chương trình?
+### Trả lời:
+Vì danh sách `itemsOrdered` lưu chung tất cả dưới dạng kiểu dữ liệu cha là `Media`, mà lớp `Media` thì không có hàm `play()`. Do đó, tại lớp `Aims`, chúng ta phải thực hiện quy trình kiểm tra và ép kiểu an toàn:
+1. Sử dụng toán tử **`instanceof`** để kiểm tra xem đối tượng `Media` hiện tại có thực sự là một thực thể thuộc lớp có tính năng phát nhạc/video hay không (hoặc kiểm tra xem nó có `instanceof Playable` hay không).
+2. Nếu đúng, tiến hành **ép kiểu xuôi (Downcasting)** đối tượng đó về kiểu `Playable`.
+3. Gọi hàm `.play()` của đối tượng đã ép kiểu để hệ thống kích hoạt cơ chế đa hình, tự động chạy hàm phát tương ứng của DVD hoặc CD.
