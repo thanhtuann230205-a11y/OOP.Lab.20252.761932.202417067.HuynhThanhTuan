@@ -1,0 +1,25 @@
+Lab 05 GUI Programming
+
+1. Swing and AWT comparison
+- AWT top-level container: Frame. Swing top-level container: JFrame.
+- AWT components are heavyweight, for example Label and TextField. Swing components are lightweight, for example JLabel and JTextField.
+- Swing components should be added to the JFrame content pane, while AWT components can be added directly to Frame.
+- Event handling is similar in both libraries: components register listeners and listeners implement callback methods such as actionPerformed().
+
+2. Completed exercises
+- Created AWTAccumulator and SwingAccumulator.
+- Created NumberGrid with digit, DEL, and C button handling.
+- Created JavaFX Painter and added the Eraser tool using RadioButton and ToggleGroup.
+- Created AIMS Store screen using Swing.
+- Created AIMS Cart screen using JavaFX embedded in Swing with JFXPanel.
+- Added cart TableView, Play, Remove, Place Order, total cost update, and filter by ID/title.
+- Added Add Book, Add CD, and Add DVD screens for updating the store.
+- Added PlayerException and updated Playable, DigitalVideoDisc, CompactDisc, and Track.
+- Updated Media.equals() so two media objects are equal when they have the same title.
+
+3. Exception hierarchy
+- java.lang.Exception
+- hust.soict.globalict.aims.exception.PlayerException
+
+4. Notes
+- With JDK versions after 1.8, JavaFX must be added to the project build path or module path.

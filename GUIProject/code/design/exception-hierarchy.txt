@@ -1,0 +1,6 @@
+AIMS self-defined exception hierarchy
+
+java.lang.Exception
+`-- hust.soict.globalict.aims.exception.PlayerException
+
+Export this tree as a PNG from Astah for the final lab submission if the lecturer requires the exact diagram artifact.
